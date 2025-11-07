@@ -34,43 +34,122 @@ fraud-detection-pipeline
 - **Machine Learning Model**: A trained model that predicts fraudulent transactions based on historical data.
 - **Analyst Console**: A React-based console for analysts to review flagged transactions and take necessary actions.
 
-## Setup Instructions
+## 🚀 Quick Start
 
-1. **Clone the Repository**:
+### Prerequisites
+
+- **Docker Desktop** installed and running ([Download here](https://www.docker.com/products/docker-desktop))
+- **Docker Compose** (included with Docker Desktop)
+- At least 4GB RAM available for Docker
+- Ports available: 3000, 8080, 8081, 9092, 27017, 2181
+
+### Option 1: Docker Compose (Recommended) ⭐
+
+The easiest way to run the entire application:
+
+```bash
+# Clone the repository
+git clone https://github.com/rishit-sagar/fraud-detection-pipeline.git
+cd fraud-detection-pipeline
+
+# Start all services
+docker-compose up -d
+
+# View logs (optional)
+docker-compose logs -f
+```
+
+**Or use the quick start script:**
+
+**Windows (PowerShell):**
+```powershell
+.\docker-start.ps1
+```
+
+**Linux/Mac:**
+```bash
+chmod +x docker-start.sh
+./docker-start.sh
+```
+
+### Option 2: Manual Setup (Without Docker)
+
+If you prefer to run services locally:
+
+1. **Start Infrastructure Services** (MongoDB, Kafka, Zookeeper):
+   ```bash
+   cd infra/docker
+   docker-compose up -d
    ```
-   git clone <repository-url>
-   cd fraud-detection-pipeline
+
+2. **Start API Service**:
+   ```bash
+   cd services/api
+   npm install
+   npm run build
+   npm start
+   # Runs on http://localhost:8080
    ```
 
-2. **Install Dependencies**:
-   - For the API service:
-     ```
-     cd services/api
-     npm install
-     ```
-   - For the online feature extraction service:
-     ```
-     cd ../online-feature-service
-     npm install
-     ```
-   - For the frontend console:
-     ```
-     cd ../../frontend/console
-     npm install
-     ```
+3. **Start Feature Service**:
+   ```bash
+   cd services/online-feature-service
+   npm install
+   npm run build
+   npm start
+   # Runs on http://localhost:8081
+   ```
 
-3. **Configure Environment Variables**:
-   - Copy the `.env.example` file in the `services/api` directory to `.env` and update the database connection string and other configurations as needed.
+4. **Start Frontend**:
+   ```bash
+   cd frontend/analyst-console
+   npm install
+   npm start
+   # Runs on http://localhost:3000
+   ```
 
-4. **Start Services**:
-   - Use the provided script to start all services:
-     ```
-     cd ../scripts
-     ./start-all.sh
-     ```
+## 🌐 Access the Application
 
-5. **Access the Analyst Console**:
-   - Open your browser and navigate to `http://localhost:3000` to access the React console.
+Once all services are running:
+
+- **Frontend Console**: http://localhost:3000
+- **API Endpoint**: http://localhost:8080
+- **API Health Check**: http://localhost:8080/health
+- **Feature Service**: http://localhost:8081/health
+
+## 📝 Common Commands
+
+```bash
+# Start all services
+docker-compose up -d
+
+# Stop all services (keeps data)
+docker-compose stop
+
+# Restart all services
+docker-compose restart
+
+# View logs
+docker-compose logs -f
+
+# View logs for specific service
+docker-compose logs -f api
+
+# Stop and remove containers (keeps data)
+docker-compose down
+
+# Stop and remove everything including volumes (deletes data)
+docker-compose down -v
+
+# Check service status
+docker-compose ps
+```
+
+## 📖 Documentation
+
+- **Docker Deployment Guide**: See [DOCKER_DEPLOY.md](DOCKER_DEPLOY.md) for detailed Docker instructions
+- **Production Deployment**: See [DOCKER_DEPLOY.md](DOCKER_DEPLOY.md) for EC2/cloud deployment instructions
+- **Production Readiness**: See [PRODUCTION_READY.md](PRODUCTION_READY.md) for production checklist
 
 ## Aesthetic Design
 
