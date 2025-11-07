@@ -1,5 +1,5 @@
 import { Kafka } from 'kafkajs';
-import { extractFeatures } from '../features/transactionFeatures';
+import { extractTransactionFeatures } from '../features/transactionFeatures';
 
 const kafka = new Kafka({
   clientId: 'fraud-detection',
@@ -14,8 +14,9 @@ const run = async () => {
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
+      if (!message.value) return;
       const transaction = JSON.parse(message.value.toString());
-      const features = extractFeatures(transaction);
+      const features = extractTransactionFeatures(transaction);
       // Process features (e.g., send to a database or another service)
       console.log('Extracted features:', features);
     },
